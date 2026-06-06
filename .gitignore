@@ -1,0 +1,8 @@
+# Kicad files I don't want to save
+
+*.bak
+*.kicad_pcb-bak
+*.tmp
+*.autosave
+*.lck
+.history/
