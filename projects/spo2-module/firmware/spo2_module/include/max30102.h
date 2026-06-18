@@ -1,6 +1,5 @@
 #ifndef MAX30201_H
 #define MAX30201_H
-
 // HEADER INCLUDES
 #include <avr/io.h>
 #include <stdint.h>
@@ -8,6 +7,7 @@
 // MACROS FOR TWI & INITIALIZATION
 #define PC4_PC5_VALUE 0x30
 #define MAX30102_ADDRESS 0x57 // i2c address for the at328p (0b1010111) pg. 29 of datasheet
+#define MAX30102_FIFO_DATA_REG 0x07 // register address for the FIFO data pg. 10
 #define MAX30102_SLA_W 0xAE // write address for MAX30201
 #define MAX30102_SLA_R 0xAF // read address for MAX30201
 #define TWSR_VALUE 0x0 // prescaler value of 00 on bit 0,1 enables prescaler value * 1
@@ -18,10 +18,15 @@
 #define TWCR_STOP 0x10 // TWI stop condition TWSTO bit 4 ()
 // AVR STATUS CODES
 #define TWI_SLA_W_ACK 0x18 // SLA+W has been transmitted & ACK has been received (Master Transmitter)
+#define TWI_SLA_R_ACK 0x40 // SLA+R has been transmitted & ACK has been received (Master Receiver)
+#define TWI_DATA_ACK 0x28 // Data has been transmitted and ACK has been received (Master Transmitter)
 // FUNCTION PROTOTYPES
 void MAX30102_Init(void);
 void MAX30102_Start(void);
 void MAX30102_Stop(void);
 uint8_t MAX30102_Write(uint8_t data);
-uint8_t MAX30102_WriteReg(uint8_t register, uint8_t data);
+uint8_t MAX30102_ReadNack(void);
+bool MAX30102_WriteReg(uint8_t reg, uint8_t data);
+bool MAX30102_ReadReg(uint8_t reg, uint8_t *data);
+bool MAX30102_ReadFIFO();
 #endif
