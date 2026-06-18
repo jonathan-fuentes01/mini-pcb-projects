@@ -5,20 +5,27 @@
 #include "ssd1306.h"
 #include "uart.h"
 
+#define MAX_THRESHOLD 0
+
 void System_Init(void);
 
-void main(){
+int main(){
     System_Init();
     while(1){
         if (switch_flag){
             switch_flag = false;
-            if (switch_state & DOWN_VALUE){
+            if (!(switch_state & DOWN_VALUE)){ // logical negation because of pull-up resistors
+                UART_printString("Hello");
                 // change the state of the OLED (DOWN)
             }
-            if (switch_state & UP_VALUE){
+            if (!(switch_state & UP_VALUE)){
+                UART_printString("What's up!!");
+                LED_On();
                 // change the state of the OLED (UP)
             }
-            if(switch_state & MENU_VALUE){
+            if(!(switch_state & MENU_VALUE)){
+                UART_printString("Goodbye!");
+                LED_Off();
                 // change the state of the OLED (MENU)
             }
         }
