@@ -1,8 +1,9 @@
-#include <avr/iom328p.h>
+#include <avr/io.h>
 #include <util/delay.h>
 #include "switches.h"
 #include "max30102.h"
 #include "ssd1306.h"
+#include "uart.h"
 
 void System_Init(void);
 
@@ -25,8 +26,9 @@ void main(){
 }
 
 void System_Init(){
+    UART_Init();
     Switch_Init();
     MAX30102_Init();
     SSD1306_Init();
-    _delay_ms(100); // delay 100 ms for inits
+    _delay_ms(100); // wait for initializations to finish
 }

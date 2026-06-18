@@ -11,6 +11,6 @@ void Switch_Init(){
 }
 
 ISR(PCINT2_vect){
-    switch_state = PIND & PD2_PD3_PD4_VALUE;
+    switch_state = PIND & PD2_PD3_PD4_VALUE; // read pin state
     switch_flag = true;
 }
