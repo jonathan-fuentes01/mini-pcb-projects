@@ -13,20 +13,33 @@
 #define TWSR_VALUE 0x0 // prescaler value of 00 on bit 0,1 enables prescaler value * 1
 #define TWBR_VALUE 72 // 100kHz standard mode for max30102
 #define TWI_EN 0x04 // TWEN is the bit 2, set high to enable TWI
+#define TWI_ACK 0x40 // TWEA acknowledge bit set to 1
 #define TWINT_CLEAR 0x80// clear bit 7 (TWINT)
 #define TWCR_START 0x20 // TWI start condition TWSTA bit 5 (master)
 #define TWCR_STOP 0x10 // TWI stop condition TWSTO bit 4 ()
+#define SPO2_DATA_LENGTH 6 // 6 bytes
+#define ADC_18_BIT_LENGTH 0x3FFF // 18-bit values (full 3 bytes is 24 bits)
 // AVR STATUS CODES
 #define TWI_SLA_W_ACK 0x18 // SLA+W has been transmitted & ACK has been received (Master Transmitter)
 #define TWI_SLA_R_ACK 0x40 // SLA+R has been transmitted & ACK has been received (Master Receiver)
 #define TWI_DATA_ACK 0x28 // Data has been transmitted and ACK has been received (Master Transmitter)
+// MAX30102 REGISTERS
+#define MAX30102_MODE_CONFIG 0x09
+#define MAX30102_FIFO_REG 0x07
+#define MAX30102_FIFO_WR_PTR 0x04
+#define MAX30102_FIFO_READ_PTR 0x06
+#define MAX30102_FIFO_CONFIG 0x08
+#define MAX30102_SP02_CONFIG 0x0A
+#define MAX30102_OVERFLOW_COUNT 0x05
 // FUNCTION PROTOTYPES
 void MAX30102_Init(void);
 void MAX30102_Start(void);
 void MAX30102_Stop(void);
 uint8_t MAX30102_Write(uint8_t data);
 uint8_t MAX30102_ReadNack(void);
+uint8_t MAX30102_ReadAck(void);
 bool MAX30102_WriteReg(uint8_t reg, uint8_t data);
 bool MAX30102_ReadReg(uint8_t reg, uint8_t *data);
-bool MAX30102_ReadFIFO();
+bool MAX30102_ReadBytes(uint8_t reg, uint8_t *data, uint8_t length);
+bool MAX30102_ReadFIFO(uint32_t *red, uint32_t *ir);
 #endif
