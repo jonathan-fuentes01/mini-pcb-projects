@@ -15,6 +15,6 @@
 #define MODE_SELECT 0x06 // set UCSZ01 & UCSZ00 bits (8-bit mode), 1 stop bit, and no parity
 // FUNCTION PROTOTYPES
 void UART_Init(void);
-void UART_sendChar(char data);
+void UART_printChar(char data);
 void UART_printString(const char *s);
 #endif

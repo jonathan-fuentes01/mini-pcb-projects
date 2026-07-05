@@ -9,13 +9,12 @@ void MAX30102_Init(){
 }
 
 void MAX30102_Start(){
-    TWCR |= TWCR_START; // start TWI
-    TWCR |= TWINT_CLEAR; // to clear TWINT set the bit to 1
+    TWCR = TWINT_CLEAR | TWCR_START | TWI_EN ; // start TWI, to clear TWINT set the bit to 1
     while (!(TWCR & TWINT_CLEAR)); // wait for the bit to clear
 }
 
 void MAX30102_Stop(){
-    TWCR = TWCR_STOP; // clear every other bit and set it to stop
+    TWCR = TWINT_CLEAR | TWCR_STOP | TWI_EN; // clear every other bit and set it to stop
 }
 
 uint8_t MAX30102_Write(uint8_t data){
@@ -145,6 +144,47 @@ bool MAX30102_ReadFIFO(uint32_t *red, uint32_t *ir){
 
     *red &= ADC_18_BIT_LENGTH;
     *ir &= ADC_18_BIT_LENGTH;
+
+    return true;
+}
+
+bool MAX30102_Setup(){
+    // reset sensor
+    if (!MAX30102_WriteReg(MAX30102_MODE_CONFIG, MAX30102_MODE_RESET)){
+        return false;
+    }
+    _delay_ms(100);
+    // reset write pointer
+    if (!MAX30102_WriteReg(MAX30102_FIFO_WR_PTR, MAX30102_PTR_RESET)){
+        return false;
+    }
+    // reset read pointer
+    if(!MAX30102_WriteReg(MAX30102_FIFO_READ_PTR, MAX30102_PTR_RESET)){
+        return false;
+    }
+    // reset overflow counter pointer
+    if(!MAX30102_WriteReg(MAX30102_OVERFLOW_COUNT, MAX30102_PTR_RESET)){
+        return false;
+    }
+    // FIFO configuration
+    if (!MAX30102_WriteReg(MAX30102_FIFO_CONFIG, MAX30102_FIFO_CONFIG_VALUE)){
+        return false;
+    }
+    // SPO2 mode select
+    if(!MAX30102_WriteReg(MAX30102_MODE_CONFIG, SPO2_MODE)){
+        return false;
+    }
+    // SPO2 ADC configuration
+    if(!MAX30102_WriteReg(MAX30102_SP02_CONFIG, SPO2_ADC_VALUE)){
+        return false;
+    }
+    // LED current configuration
+    if(!MAX30102_WriteReg(MAX30102_LED1, LED_CURRENT_VALUE)){
+        return false;
+    }
+    if(!MAX30102_WriteReg(MAX30102_LED2, LED_CURRENT_VALUE)){
+        return false;
+    }
 
     return true;
 }

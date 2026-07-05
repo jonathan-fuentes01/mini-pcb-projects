@@ -8,13 +8,13 @@ void UART_Init(void){
     UCSR0C = MODE_SELECT; // 8-bit mode, no parity, one stop bit
 }
 
-void UART_sendChar(char data){
+void UART_printChar(char data){
     while (!(UCSR0A & UDRE0_VALUE));
     UDR0 = data;
 }
 
 void UART_printString(const char *s){
     while(*s){
-        UART_sendChar(*s++); // iterate through the string and print
+        UART_printChar(*s++); // iterate through the string and print
     }
 }
