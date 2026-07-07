@@ -52,8 +52,8 @@ bool MAX30102_WriteReg(uint8_t reg, uint8_t data){
         MAX30102_Stop();
         return false;
     }
-    status = MAX30102_Write(data); // write to register first to determine what value it needs to put there
-    if (status != TWI_DATA_ACK){ // check to see if data was transmitted
+    status = MAX30102_Write(data); // write data to the register
+    if (status != TWI_DATA_ACK){
         MAX30102_Stop();
         return false;
     }
