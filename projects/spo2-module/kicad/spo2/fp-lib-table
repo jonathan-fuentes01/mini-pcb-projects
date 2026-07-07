@@ -1,4 +1,0 @@
-(fp_lib_table
-	(version 7)
-	(lib (name "spo2_stuff") (type "KiCad") (uri "${KIPRJMOD}/spo2_stuff.pretty") (options "") (descr ""))
-)
